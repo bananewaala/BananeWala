@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Banane Waala (BW)</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      background: linear-gradient(135deg, #dbeafe, #eff6ff);
+      color: #111827;
+    }
+
+    /* Header */
+    header {
+      background-color: #7558ea;
+      color: white;
+      font-size: 1.1em;
+      position: relative;
+      overflow: hidden;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .scrolling-container {
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      box-sizing: border-box;
+    }
+
+    .scrolling-text {
+      display: inline-block;
+      padding-left: 100%;
+      animation: smoothScroll 12s linear infinite;
+    }
+
+    @keyframes smoothScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* ---------- CAROUSEL ---------- */
+    .carousel {
+      position: relative;
+      width: 100%;
+      height: 60vh;
+      min-height: 260px;
+      max-height: 700px;
+      overflow: hidden;
+      background: #eef6ff;
+    }
+
+    .carousel-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.7s ease-in-out;
+      will-change: transform;
+    }
+
+    .carousel-slide {
+      flex: 0 0 100%;
+      height: 100%;
+      position: relative;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      background-color: #eef6ff;
+    }
+
+    .carousel-caption {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #ffffff;
+      font-size: 2.2em;
+      font-weight: 700;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      text-align: center;
+      width: 90%;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .carousel-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.45);
+      border: none;
+      color: white;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 6;
+      transition: background 0.2s;
+    }
+
+    .carousel-button:hover { background: rgba(0,0,0,0.6); }
+    .carousel-button:focus { outline: 2px solid rgba(255,255,255,0.6); }
+    .carousel-button.prev { left: 18px; }
+    .carousel-button.next { right: 18px; }
+
+    .chev {
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      display: inline-block;
+      padding: 8px;
+    }
+    .chev-left { transform: rotate(135deg); }
+    .chev-right { transform: rotate(-45deg); }
+
+    .carousel-dots {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 14px;
+      display: flex;
+      gap: 8px;
+      z-index: 6;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.6);
+      cursor: pointer;
+      border: 2px solid rgba(255,255,255,0.15);
+      transition: transform 0.18s, background 0.18s;
+    }
+
+    .dot.active {
+      background: white;
+      transform: scale(1.18);
+    }
+
+    @media (max-width: 768px) {
+    .carousel-button {
+        display: none !important;
+    }
+      .carousel { height: 45vh; }
+      .carousel-caption { font-size: 1.4em; padding: 0 10px; color: #fff; }
+
+      /* make arrows smaller & lower in mobile */
+      .carousel-button {
+        width: 32px;
+        height: 32px;
+        bottom: 12%;
+        top: auto;
+        transform: none;
+      }
+
+      .carousel-button i,
+      .chev {
+        padding: 5px;
+      }
+    }
+
+    /* ---------- OTHER PAGE SECTIONS ---------- */
+    .logo-title {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 25px;
+      gap: 10px;
+    }
+
+    .logo-title img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; }
+
+    h1 { margin: 10px 0 0 0; font-size: 2em; color: #7558ea; }
+
+    section { padding: 40px 20px; max-width: 1000px; margin: auto; }
+
+    .services {
+      background-color: #f8fafc;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      margin-top: 30px;
+      padding: 40px 20px;
+    }
+
+    .services h2 { font-size: 2em; color: #1e3a8a; margin-bottom: 30px; }
+
+    .service {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      padding: 25px;
+      margin-bottom: 40px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .service:hover { transform: translateY(-5px); box-shadow: 0 6px 14px rgba(0,0,0,0.1); }
+    .service:nth-child(even) { flex-direction: row-reverse; }
+
+    .service img { width: 45%; border-radius: 12px; object-fit: cover; min-height: 280px; }
+
+    .service-content { width: 50%; text-align: left; }
+
+    .service-content h3 { color: #1e3a8a; font-size: 1.6em; margin-bottom: 10px; }
+    .service-content p { color: #374151; font-size: 1em; margin-bottom: 15px; line-height: 1.6; }
+
+    .service-points { list-style: none; padding: 0; margin: 0; }
+    .service-points li { margin-bottom: 10px; display: flex; align-items: center; gap: 8px; color: #1f2937; }
+    .service-points li::before { content: "🔧"; }
+
+    .about { margin-top: 50px; }
+    .about h2 { color: #1e3a8a; margin-bottom: 20px; }
+    .about p { color: #374151; max-width: 700px; margin: auto; line-height: 1.6; }
+
+    footer { background-color: #1e3a8a; color: white; padding: 15px; margin-top: 40px; }
+
+    /* ---------- CALL NOW BUTTON ---------- */
+    .call-now {
+      position: fixed;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 22px;
+      background-color: #16a34a;
+      color: white;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.1em;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .call-now:hover { background-color: #15803d; }
+  </style>
+</head>
+<body>
+
+  <!-- Running Header -->
+  <header>
+    <div class="scrolling-container">
+      <div class="scrolling-text">
+        📞 +91 7004079237 • Service Hours: 7 AM – 7 PM • Banane Waala – Trusted Home Services
+      </div>
+    </div>
+  </header>
+
+  <!-- ---------- CAROUSEL ---------- -->
+  <div class="carousel" id="carousel">
+    <div class="carousel-track" id="carouselTrack">
+      <div class="carousel-slide" style="background-image: url('https://images.pexels.com/photos/585418/pexels-photo-585418.jpeg?auto=compress&cs=tinysrgb&w=1600');"></div>
+      <div class="carousel-slide" style="background-image: url('https://images.pexels.com/photos/4792479/pexels-photo-4792479.jpeg?auto=compress&cs=tinysrgb&w=1600');"></div>
+      <div class="carousel-slide" style="background-image: url('https://images.pexels.com/photos/8090152/pexels-photo-8090152.jpeg?auto=compress&cs=tinysrgb&w=1600');"></div>
+    </div>
+
+    <div class="carousel-caption">Reliable. Skilled. Affordable. — Banane Waala</div>
+
+    <button class="carousel-button prev" id="btnPrev"><i class="chev chev-left"></i></button>
+    <button class="carousel-button next" id="btnNext"><i class="chev chev-right"></i></button>
+
+    <div class="carousel-dots" id="carouselDots">
+      <div class="dot active" data-index="0"></div>
+      <div class="dot" data-index="1"></div>
+      <div class="dot" data-index="2"></div>
+    </div>
+  </div>
+
+  <!-- Services -->
+  <section class="services">
+    <h2>Our Services</h2>
+
+    <div class="service">
+      <img src="https://img.freepik.com/free-photo/plumbing-professional-doing-his-job_23-2150721533.jpg?semt=ais_hybrid&w=740&q=80" alt="Plumbing Service">
+      <div class="service-content">
+        <h3>🚰 Plumbing Solutions</h3>
+        <p>From minor leaks to complete bathroom fittings, our skilled plumbers ensure every pipe and tap in your home works perfectly.</p>
+        <ul class="service-points">
+          <li>Tap Installation & Repair</li>
+          <li>Leak Detection & Fixing</li>
+          <li>Water Tank Cleaning</li>
+          <li>Pipe Fitting & Replacement</li>
+          <li>Bathroom Setup</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="service">
+      <img src="https://img.freepik.com/free-photo/male-electrician-works-switchboard-with-electrical-connecting-cable_169016-15090.jpg?semt=ais_hybrid&w=740&q=80" alt="Electrical Service">
+      <div class="service-content">
+        <h3>💡 Electrical Services</h3>
+        <p>Our certified electricians bring safety and efficiency to your home’s electrical setup. From lighting to power backup — we do it all safely and smartly.</p>
+        <ul class="service-points">
+          <li>Switch Board Installation</li>
+          <li>Wiring & Lighting Solutions</li>
+          <li>Fan & Light Repair</li>
+          <li>Appliance Installation</li>
+          <li>Power Backup Setup</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="about">
+    <h2>🙋‍♂️ About Us</h2>
+    <p>
+      At <strong>Banane Waala</strong>, we aim to simplify your daily life by offering quick, trusted,
+      and professional home services. Our expert technicians are just one call away — because your comfort is our priority.
+    </p>
+  </section>
+
+  <footer>© 2025 Banane Waala | All Rights Reserved | 📞 +91 7004079237</footer>
+
+  <!-- Floating Call Button -->
+  <a href="tel:+917004079237" class="call-now">📞 Call Now</a>
+
+  <!-- Carousel Script (unchanged) -->
+  <script>
+    (function() {
+      const track = document.getElementById('carouselTrack');
+      let slides = Array.from(track.children);
+      const prevBtn = document.getElementById('btnPrev');
+      const nextBtn = document.getElementById('btnNext');
+      const dotsContainer = document.getElementById('carouselDots');
+      const dots = Array.from(dotsContainer.children);
+      const carousel = document.getElementById('carousel');
+
+      const intervalTime = 5000;
+      let timer = null;
+
+      const firstClone = slides[0].cloneNode(true);
+      track.appendChild(firstClone);
+      slides = Array.from(track.children);
+      const originalCount = slides.length - 1;
+      let current = 0;
+
+      function setTranslateByIndex(index, withTransition = true) {
+        track.style.transition = withTransition ? 'transform 0.7s ease-in-out' : 'none';
+        track.style.transform = 'translateX(' + (-index * 100) + '%)';
+        if (!withTransition) track.offsetHeight;
+      }
+
+      function goTo(index) {
+        if (index < 0) { current = originalCount - 1; setTranslateByIndex(current); updateActive(); return; }
+        if (index === 0 && current === originalCount - 1) {
+          current = originalCount;
+          setTranslateByIndex(current);
+          updateActive();
+          return;
+        }
+        current = (index + originalCount) % originalCount;
+        setTranslateByIndex(current);
+        updateActive();
+      }
+
+      function updateActive() {
+        slides.forEach((s, i) => s.setAttribute('aria-hidden', i === current ? 'false' : 'true'));
+        dots.forEach((d, i) => d.classList.toggle('active', i === (current % originalCount)));
+      }
+
+      track.addEventListener('transitionend', () => {
+        if (current === originalCount) { setTranslateByIndex(0, false); current = 0; updateActive(); }
+      });
+
+      function next() { current === originalCount - 1 ? goTo(0) : goTo(current + 1); }
+      function prev() { current === 0 ? goTo(originalCount - 1) : goTo(current - 1); }
+
+      dots.forEach(dot => dot.addEventListener('click', function() {
+        current = parseInt(this.dataset.index, 10);
+        setTranslateByIndex(current);
+        updateActive();
+        resetTimer();
+      }));
+
+      prevBtn.addEventListener('click', () => { prev(); resetTimer(); });
+      nextBtn.addEventListener('click', () => { next(); resetTimer(); });
+
+      function startTimer() { timer = setInterval(next, intervalTime); }
+      function stopTimer() { clearInterval(timer); }
+      function resetTimer() { stopTimer(); startTimer(); }
+
+      carousel.addEventListener('mouseenter', stopTimer);
+      carousel.addEventListener('mouseleave', startTimer);
+
+      setTranslateByIndex(0, false);
+      updateActive();
+      startTimer();
+    })();
+  </script>
+  <script>
+  // Enable touch swipe for carousel in mobile view
+  const carouselTrack = document.getElementById('carouselTrack');
+  let startX = 0;
+
+  carouselTrack.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+  });
+
+  carouselTrack.addEventListener('touchend', (e) => {
+    let endX = e.changedTouches[0].clientX;
+    if (startX - endX > 50) {
+      // Swipe left → next slide
+      document.querySelector('.carousel-button.next')?.click();
+    } else if (endX - startX > 50) {
+      // Swipe right → previous slide
+      document.querySelector('.carousel-button.prev')?.click();
+    }
+  });
+</script>
+</body>
+</html>
